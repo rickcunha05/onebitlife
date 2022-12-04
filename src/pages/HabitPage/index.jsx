@@ -1,9 +1,11 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
+
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 
-export default function HabitPage() {
+export default function HabitPage({ route }) {
     const navigation = useNavigation();
+    const { create, habit } = route.params
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -17,7 +19,13 @@ export default function HabitPage() {
                             style={styles.arrowBack}
                         />
                     </TouchableOpacity>
-                    <View style={styles.mainContent}></View>
+                    <View style={styles.mainContent}>
+                        <Text style={styles.title}> Configurações {"\n"} de hábito </Text>
+                        <Text style={styles.inputText}>Área</Text>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.area}>{habit?.habitArea}</Text>
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
         </View>
@@ -28,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(21, 21, 21, 0.98)",
     },
-    bakcPageBtn: {
+    backPageBtn: {
         width: 40,
         height: 40,
         margin: 25,

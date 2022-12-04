@@ -6,102 +6,102 @@ import StatusBar from "../../Components/Home/StatusBar"
 import CreateHabit from "../../Components/Home/CreateHabit"
 import EditHabit from "../../Components/Home/EditHabit"
 
-export default function Home(){ 
+export default function Home() {
     const navigation = useNavigation()
     const [mindHabit, setMindHabit] = useState();
     const [moneyHabit, setMoneyHabit] = useState();
     const [bodyHabit, setBodyHabit] = useState();
     const [funHabit, setFunHabit] = useState();
 
-    function handleNavAppExploration(){
+    function handleNavAppExploration() {
         navigation.navigate("AppExplanation")
     }
-    return (        
+    return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={{alignItems: "center"}}>
+                <View style={{ alignItems: "center" }}>
                     <Text style={styles.dailyChecks}> 20 dias - 80 checks</Text>
                     <LifeStatus />
-                    <StatusBar />              
-                    {/* inicio validação ou criação de hábitos da mente    */}
+                    <StatusBar />
+                    {/* inicio validação ou criação de hábitos da mente*/}
                     {mindHabit ? (
-                        <EditHabit 
+                        <EditHabit
                             habit={mindHabit?.habitName}
-                            frequency={`${mindHabit?.habitTime} - ${mindHabit?.habitFrequency}` }
+                            frequency={`${mindHabit?.habitTime} - ${mindHabit?.habitFrequency}`}
                             habitArea={mindHabit?.habitArea}
                             checkColor="#90b7f3"
                         />
-                    ):
-                    <CreateHabit habitArea="Mente" borderColor="#90b7f3"/>                                      
+                    ) :
+                        <CreateHabit habitArea="Mente" borderColor="#90b7f3" />
                     }
 
                     {/* inicio validação ou criação de hábitos da financeiros    */}
 
                     {moneyHabit ? (
-                        <EditHabit 
+                        <EditHabit
                             habit={moneyHabit?.habitName}
-                            frequency={`${moneyHabit?.habitTime} - ${moneyHabit?.habitFrequency}` }
+                            frequency={`${moneyHabit?.habitTime} - ${moneyHabit?.habitFrequency}`}
                             habitArea={moneyHabit?.habitArea}
                             checkColor="#85BB65"
                         />
-                    ):
-                    <CreateHabit habitArea="Financeiro" borderColor="#85BB65"/>                                      
+                    ) :
+                        <CreateHabit habitArea="Financeiro" borderColor="#85BB65" />
                     }
 
                     {/* inicio validação ou criação de hábitos da Saúde    */}
 
                     {bodyHabit ? (
-                        <EditHabit 
+                        <EditHabit
                             habit={bodyHabit?.habitName}
-                            frequency={`${bodyHabit?.habitTime} - ${bodyHabit?.habitFrequency}` }
+                            frequency={`${bodyHabit?.habitTime} - ${bodyHabit?.habitFrequency}`}
                             habitArea={bodyHabit?.habitArea}
                             checkColor="#FF0044"
                         />
-                    ):
-                    <CreateHabit habitArea="Saúde" borderColor="#FF0044"/>                                      
+                    ) :
+                        <CreateHabit habitArea="Saúde" borderColor="#FF0044" />
                     }
 
                     {/* inicio validação ou criação de hábitos da Diversão    */}
 
                     {funHabit ? (
-                        <EditHabit 
+                        <EditHabit
                             habit={funHabit?.habitName}
-                            frequency={`${funHabit?.habitTime} - ${funHabit?.habitFrequency}` }
+                            frequency={`${funHabit?.habitTime} - ${funHabit?.habitFrequency}`}
                             habitArea={funHabit?.habitArea}
                             checkColor="#FE7F23"
                         />
-                    ):
-                    <CreateHabit habitArea="Humor" borderColor="#FE7F23"/>                                      
-                    }                                                           
+                    ) :
+                        <CreateHabit habitArea="Humor" borderColor="#FE7F23" />
+                    }
                 </View>
                 <Text
-                 style={styles.explanationText}
-                 onPress={() => handleNavAppExploration()}
-                 >
-                 ver explicação novamente
-                 </Text>
+                    style={styles.explanationText}
+                    onPress={() => handleNavAppExploration()}
+                >
+                    ver explicação novamente
+                </Text>
             </ScrollView>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor:"rgba(21, 21, 21, 0.98)",
+    container: {
+        flex: 1,
+        backgroundColor: "rgba(21, 21, 21, 0.98)",
     },
-    dailyChecks:{
-        color:"white",
-        fontWeight:"bold",
-        textAlign:"center",
+    dailyChecks: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
         fontSize: 18,
-        marginTop:40,
+        marginTop: 40,
     },
-    explanationText:{
-        color:"white",
-        fontSize:16,
-        fontWeight:"bold",
-        textAlign:"center",
+    explanationText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "center",
         paddingTop: 15,
         paddingBottom: 25,
     }
