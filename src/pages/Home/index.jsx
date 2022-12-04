@@ -1,11 +1,16 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigation } from "@react-navigation/native"
 import { ScrollView, Text, View, StyleSheet } from "react-native"
 import LifeStatus from "../../Components/Common/LifeStatus"
 import StatusBar from "../../Components/Home/StatusBar"
+import CreateHabit from "../../Components/Home/CreateHabit"
 
 export default function Home(){ 
     const navigation = useNavigation()
+    const [mindHabit, setMindHabit] = useState();
+    const [moneyHabit, setMoneyHabit] = useState();
+    const [bodyHabit, setBodyHabit] = useState();
+    const [funHabit, setFunHabit] = useState();
 
     function handleNavAppExploration(){
         navigation.navigate("AppExplanation")
@@ -17,6 +22,7 @@ export default function Home(){
                     <Text style={styles.dailyChecks}> 20 dias - 80 checks</Text>
                     <LifeStatus />
                     <StatusBar />
+                    <CreateHabit habitArea="Mente" borderColor = "#ffff" />
                 </View>
                 <Text
                  style={styles.explanationText}
