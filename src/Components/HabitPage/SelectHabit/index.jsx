@@ -16,7 +16,7 @@ export default function SelectHabit({ habit, habitInput }) {
         if (habit?.habitArea === "Financeiro") {
             setData(HabitsData.dataMoney)
         }
-        if (habit?.habitArea === "Corpo") {
+        if (habit?.habitArea === "Saúde") {
             setData(HabitsData.dataBody)
         }
         if (habit?.habitArea === "Humor") {
@@ -27,10 +27,12 @@ export default function SelectHabit({ habit, habitInput }) {
     return (
         <>
             <SelectList
-                selected={setSelected}
+                setSelected={setSelected}
                 data={data}
                 search={false}
-                onSelect={() => { habitInput(selected) }}
+                onSelect={() => {
+                    habitInput(selected);
+                }}
                 placeholder={selected}
                 boxStyles={styles.boxStyle}
                 inputStyles={styles.inputStyle}
@@ -45,6 +47,7 @@ export default function SelectHabit({ habit, habitInput }) {
                 }
             />
         </>
+
     )
 }
 const styles = StyleSheet.create({
