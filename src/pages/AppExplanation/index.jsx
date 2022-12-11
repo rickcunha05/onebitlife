@@ -1,32 +1,47 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Text, View, StyleSheet, ScrollView} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import DefaultButton from "../../Components/Common/DefaultButton";
 import ExplanationCard from "../../Components/Explanation/ExplanationCard";
+import ChangeNavigationService from "../../Services/ChangeNavigationService";
 
-export default function AppExplanation(){
+export default function AppExplanation() {
     const navigation = useNavigation()
-    function handleNavHome(){
+    const [showHome, setShowHome] = useState("false");
+    const startDate = new Date();
+    const month = `${startDate.getMonth() + 1}`.padStart(2, "0");
+    const day = `${startDate.getDate()}`.padStart(2, "0");
+    const appStartData = `${startDate.getFullYear()}-${month}-${day}`;
+    function handleNavHome() {
         navigation.navigate("Home")
     }
-    return(
+    function handleSetShowHome() {
+        if (showHome !== "true") {
+            ChangeNavigationService.setShowHome({ showHome: "true", appStartData })
+                .then(() => console.log(`Sucesso! ${showHome} ${appStartData}`))
+                .catch((err) => console.log(err));
+            setShowHome("true");
+            handleNavHome();
+        }
+    }
+    return (
         <View style={styles.container}>
             <ScrollView>
-                <View style={{alignItems:"center", marginTop:40}}>
+                <View style={{ alignItems: "center", marginTop: 40 }}>
                     <Text style={styles.title}>
                         Antes deixa {"\n"} eu te explicar...
-                    </Text>              
-                    <ExplanationCard />      
+                    </Text>
+                    <ExplanationCard />
                     <Text style={styles.subTitle}>
                         Pronto (a) para melhorar sua qualidade de vida?
                     </Text>
                     <Text style={styles.description}>
-                        Na proxima tela você vai poder escolher {"\n"} 
+                        Na proxima tela você vai poder escolher {"\n"}
                         seus 4 hábitos de forma individual.
                     </Text>
-                    <DefaultButton 
+                    <DefaultButton
                         buttonText={"Continuar"}
-                        handlePress={handleNavHome}
+                        handlePress={handleSetShowHome}
                         width={250}
                         height={50}
                     />
@@ -36,27 +51,27 @@ export default function AppExplanation(){
     )
 }
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor: "rgba(21, 21, 21, 0.98)",        
+    container: {
+        flex: 1,
+        backgroundColor: "rgba(21, 21, 21, 0.98)",
     },
-    title:{        
+    title: {
         color: "white",
-        fontSize:30,
-        fontWeight:"bold",
-        textAlign:"center",       
+        fontSize: 30,
+        fontWeight: "bold",
+        textAlign: "center",
         marginVertical: 40
     },
-    subTitle:{
+    subTitle: {
         color: "white",
-        fontWeight:"bold",
+        fontWeight: "bold",
         fontSize: 16,
         marginTop: 20,
-        marginBottom:10,
+        marginBottom: 10,
     },
-    description:{
+    description: {
         color: "white",
-        textAlign:"center",
+        textAlign: "center",
         marginBottom: 30,
     }
 })
