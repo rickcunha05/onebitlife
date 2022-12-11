@@ -98,17 +98,18 @@ export default function TimeDatePicker({
                 <Text style={styles.notificationText}>
                     Horário do hábito: {notificationTime}
                 </Text>
+                {show && (
+                    <DateTimePicker
+                        style={styles.dateTimePicker}
+                        testID="DateTimePicker"
+                        display="default"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        onChange={onChange}
+                    />
+                )}
             </View>
-            {show && (
-                <DateTimePicker
-                    testID="DateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-                />
-            )}
         </View>
     )
 
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
     notificationText: {
         fontSize: 18,
         color: "white",
+        marginTop: 15
     },
     boxStyle: {
         borderWidth: 1,
@@ -162,4 +164,8 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
+    dateTimePicker: {
+        display: "flex"
+
+    }
 })

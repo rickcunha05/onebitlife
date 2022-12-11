@@ -1,11 +1,13 @@
 import React, { setHabitInput, setFrequencyInput, useState, useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
 import SelectHabit from "../../Components/HabitPage/SelectHabit";
 import SelectFrequency from "../../Components/HabitPage/SelectFrequency";
 import Notification from "../../Components/HabitPage/Notification";
 import TimeDatePicker from "../../Components/TimeDatePicker";
+import DefaultButton from "../../Components/Common/DefaultButton";
+import UpdateExcludeButtons from "../../Components/HabitPage/UpdateExludeButtons";
 
 export default function HabitPage({ route }) {
     const navigation = useNavigation();
@@ -16,6 +18,61 @@ export default function HabitPage({ route }) {
     const [timeNotification, setTimeNotification] = useState();
 
     const { create, habit } = route.params
+
+    function handleCreateHabit() {
+        //  Tratamento para habito e frequência indefinidos
+        if (habitInput === undefined || frequencyInput === undefined) {
+            Alert.alert('Você precisa selecionar um hábito e frequência para continuar!')
+        }
+        // Tratamento para hábitos diários
+        else if (notificationToggle === true && frequencyInput === "Diário" && timeNotification === undefined) {
+            Alert.alert("Você precisa dizer o horário que deseja receber a notificação!")
+        }
+        // Tratamento para hábitos semanais
+        else if (notificationToggle === true && frequencyInput === "Semanal"
+            && dayNotification === undefined && timeNotification === undefined) {
+            Alert.alert("Você precisa dizer o horário e o dia que deseja receber a notificação!")
+        }
+        // Tratamento para salvar o novo hábito caso venha tudo preenchido
+        else {
+            navigation.navigate("Home", {
+                createHabit: `Created in ${habit?.habitArea}`
+            })
+        }
+
+    }
+    function handleUpdateHabit() {
+        if (notificationToggle === true && !dayNotification && !timeNotification) {
+            Alert.alert("Você precisa colocar a frequência e horário da notificação");
+        } else {
+            HabitsService.updateHabit({
+                habitArea: habit?.habitArea,
+                habitName: habitInput,
+                habitFrequency: frequencyInput,
+                habitHasNotification: notificationToggle,
+                habitNotificationFrequency: dayNotification,
+                habitNotificationTime: timeNotification,
+                habitNotificationId: notificationToggle ? habitInput : null,
+            }).then(() => {
+                Alert.alert("Sucesso na atualização do hábito");
+                if (!notificationToggle) {
+                    NotificationService.deleteNotification(habit?.habitName);
+                } else {
+                    NotificationService.deleteNotification(habit?.habitName);
+                    NotificationService.createNotification(
+                        habitInput,
+                        frequencyInput,
+                        dayNotification,
+                        timeNotification
+                    );
+                }
+
+                navigation.navigate("Home", {
+                    updatedHabit: `Updated in ${habit?.habitArea}`,
+                });
+            });
+        }
+    }
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -57,7 +114,25 @@ export default function HabitPage({ route }) {
                                 />
                             )
                         ) : null}
+
+                        {create === false ? (
+                            <UpdateExcludeButtons
+                                handleUpdate={handleUpdateHabit}
+                                habitArea={habit?.habitArea}
+                                habitInput={habitInput}
+                            />
+                        ) : (
+                            <View style={styles.configButton}>
+                                <DefaultButton
+                                    buttonText={"Criar"}
+                                    handlePress={handleCreateHabit}
+                                    width={250}
+                                    height={50}
+                                />
+                            </View>
+                        )}
                     </View>
+
                 </View>
             </ScrollView>
         </View>
