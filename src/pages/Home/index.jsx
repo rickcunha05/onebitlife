@@ -5,22 +5,74 @@ import LifeStatus from "../../Components/Common/LifeStatus"
 import StatusBar from "../../Components/Home/StatusBar"
 import CreateHabit from "../../Components/Home/CreateHabit"
 import EditHabit from "../../Components/Home/EditHabit"
+import ChangeNavigationService from "../../Services/ChangeNavigationService";
+import db from "../../Database";
 
-export default function Home() {
+export default function Home({ route }) {
     const navigation = useNavigation()
     const [mindHabit, setMindHabit] = useState();
     const [moneyHabit, setMoneyHabit] = useState();
     const [bodyHabit, setBodyHabit] = useState();
     const [funHabit, setFunHabit] = useState();
 
+    const [robotDaysLife, setRobotDaysLife] = useState();
+    const [checks, setChecks] = useState();
+    const [gameOver, setGameOver] = useState(false);
+    const today = new Date();
+
     function handleNavAppExploration() {
         navigation.navigate("AppExplanation")
     }
+    useEffect(() => {
+        // HabitsService.findByArea("Mente").then((mind) => {
+        //     setMindHabit(mind[0]);
+        // });
+        // HabitsService.findByArea("Financeiro").then((money) => {
+        //     setMoneyHabit(money[0]);
+        // });
+        // HabitsService.findByArea("Corpo").then((body) => {
+        //     setBodyHabit(body[0]);
+        // });
+        // HabitsService.findByArea("Humor").then((fun) => {
+        //     setFunHabit(fun[0]);
+        // });
+
+        // if (excludeArea) {
+        //     if (excludeArea == "Mente") {
+        //         setMindHabit(null);
+        //     }
+        //     if (excludeArea == "Financeiro") {
+        //         setMoneyHabit(null);
+        //     }
+        //     if (excludeArea == "Saúde") {
+        //         setBodyHabit(null);
+        //     }
+        //     if (excludeArea == "Humor") {
+        //         setFunHabit(null);
+        //     }
+        // }
+
+        ChangeNavigationService.checkShowHome(1)
+            .then((showHome) => {
+                const month = `${today.getMonth() + 1}`.padStart(2, "0");
+                const day = `${today.getDate()}`.padStart(2, "0");
+                const formDate = `${today.getFullYear()}-${month}-${day}`;
+                const checkDays =
+                    new Date(formDate) - new Date(showHome.appStartData) + 1;
+
+                if (checkDays === 0) {
+                    setRobotDaysLife(checkDays.toString().padStart(2, "0"));
+                } else {
+                    setRobotDaysLife(parseInt(checkDays / (1000 * 3600 * 24)));
+                }
+            })
+            .catch((err) => console.log(err));
+    }, [route.params]);
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={{ alignItems: "center" }}>
-                    <Text style={styles.dailyChecks}> 20 dias - 80 checks</Text>
+                    <Text style={styles.dailyChecks}>❤️ 0{robotDaysLife} {robotDaysLife === "01" ? "dias" : "dia"} - ✅ 80 checks</Text>
                     <LifeStatus />
                     <StatusBar />
                     {/* inicio validação ou criação de hábitos da mente*/}
