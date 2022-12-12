@@ -8,6 +8,7 @@ import Notification from "../../Components/HabitPage/Notification";
 import TimeDatePicker from "../../Components/TimeDatePicker";
 import DefaultButton from "../../Components/Common/DefaultButton";
 import UpdateExcludeButtons from "../../Components/HabitPage/UpdateExludeButtons";
+import HabitsService from "../../Services/HabitsService";
 
 export default function HabitPage({ route }) {
     const navigation = useNavigation();
@@ -18,6 +19,9 @@ export default function HabitPage({ route }) {
     const [timeNotification, setTimeNotification] = useState();
 
     const { create, habit } = route.params
+
+    const habitCreated = new Date();
+    const formatDate = `${habitCreated.getFullYear()}-${habitCreated.getMonth()}-${habitCreated.getDate()}`;
 
     function handleCreateHabit() {
         //  Tratamento para habito e frequência indefinidos
@@ -35,11 +39,27 @@ export default function HabitPage({ route }) {
         }
         // Tratamento para salvar o novo hábito caso venha tudo preenchido
         else {
-            navigation.navigate("Home", {
-                createHabit: `Created in ${habit?.habitArea}`
-            })
-        }
+            HabitsService.createHabit({
+                habitArea: habit?.habitArea,
+                habitName: habitInput,
+                habitFrequency: frequencyInput,
+                habitHasNotification: notificationToggle,
+                habitNotificationFrequency: dayNotification,
+                habitNotificationTime: timeNotification,
+                lastCheck: formatDate,
+                daysWithoutChecks: 0,
+                habitIsChecked: 0,
+                progressBar: 1,
+                habitChecks: 0,
+            }).then(() => {
+                Alert.alert("Sucesso na criação do hábito!");
 
+                navigation.navigate("Home", {
+                    createdHabit: `Created in ${habit?.habitArea}`,
+                });
+            });
+
+        }
     }
     function handleUpdateHabit() {
         if (notificationToggle === true && !dayNotification && !timeNotification) {
