@@ -74,18 +74,7 @@ export default function HabitPage({ route }) {
                 habitNotificationTime: timeNotification,
                 habitNotificationId: notificationToggle ? habitInput : null,
             }).then(() => {
-                Alert.alert("Sucesso na atualização do hábito");
-                if (!notificationToggle) {
-                    NotificationService.deleteNotification(habit?.habitName);
-                } else {
-                    NotificationService.deleteNotification(habit?.habitName);
-                    NotificationService.createNotification(
-                        habitInput,
-                        frequencyInput,
-                        dayNotification,
-                        timeNotification
-                    );
-                }
+                Alert.alert("Hábito atualizado com sucesso! ");
 
                 navigation.navigate("Home", {
                     updatedHabit: `Updated in ${habit?.habitArea}`,

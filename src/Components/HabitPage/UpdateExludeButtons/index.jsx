@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, Image, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-//import HabitsService from "../../../Services/HabitsService";
+import HabitsService from "../../../Services/HabitsService";
 
 
-export default function UpdateExcludeButtons({ }) {
+export default function UpdateExcludeButtons({ habitInput, handleUpdate, habitArea }) {
     const navigation = useNavigation();
     // function handleDeleteHabit() {
     //     HabitsService.deleteByName(habitArea)

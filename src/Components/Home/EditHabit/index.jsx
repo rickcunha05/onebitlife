@@ -1,7 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { useNavigation } from "@react-navigation/native"
 
 export default function EditHabit({ habit, frequency, habitArea, checkColor }) {
+
+  const navigation = useNavigation();
 
   function handleEditHabit() {
     navigation.navigate("HabitPage", {
